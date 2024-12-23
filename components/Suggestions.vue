@@ -8,8 +8,8 @@
         class="h-14 w-14 rounded-full"
       />
       <div class="flex-1">
-        <p class="font-semibold">cjc8876</p>
-        <p class="text-gray-500 text-sm">Cj Cj</p>
+        <p class="font-semibold">cdjkr</p>
+        <p class="text-gray-500 text-sm">Endale</p>
       </div>
       <button class="text-blue-400 font-medium text-sm">Switch</button>
     </div>
