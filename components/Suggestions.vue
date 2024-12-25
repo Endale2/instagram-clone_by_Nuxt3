@@ -101,7 +101,7 @@
             <p>followers</p>
           </div>
           <div class="flex flex-col items-center">
-            <p class="font-bold text-white">{{ user.following }}</p>
+            <p class="font-bold text-white">{{ user.following_peoples }}</p>
             <p>following</p>
           </div>
         </div>
@@ -148,6 +148,7 @@ const suggestions = ref([
     posts: 3808,
     followers: '645M',
     following: false,
+    following_peoples: 446,
     verified: true,
     recentPosts: ['/images/ronaldo1.png', '/images/ronaldo2.png', '/images/ronaldo3.png'],
   },
@@ -159,6 +160,7 @@ const suggestions = ref([
     posts: 9429,
     followers: '178M',
     following: false,
+    following_peoples: 512,
     verified: true,
     recentPosts: ['/images/kevin1.png', '/images/kevin2.png', '/images/kevin3.png'],
   },
@@ -170,6 +172,7 @@ const suggestions = ref([
     posts: 20,
     followers: '78.8k',
     following: false,
+    following_peoples: 7065,
     verified: false,
     recentPosts: ['/images/jane.png', '/images/sarah.png', '/images/emily.png'],
   },
@@ -181,6 +184,7 @@ const suggestions = ref([
     posts: 200,
     followers: '15.8k',
     following: false,
+    following_peoples: 7065,
     verified: false,
     recentPosts: ['/images/david.png', '/images/john_doe.png', '/images/mike.png'],
   },
