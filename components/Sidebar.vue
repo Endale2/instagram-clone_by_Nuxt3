@@ -5,7 +5,7 @@
   >
     <!-- Instagram Logo -->
     <div class="text-white text-2xl font-bold mb-4 lg:block hidden">
-      Instagram
+      Instagram Clone
     </div>
 
     <!-- Menu Items -->
