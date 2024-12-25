@@ -139,7 +139,6 @@
 <script setup>
 import { ref } from 'vue';
 
-// Sample Suggestions Data
 const suggestions = ref([
   {
     id: 1,
@@ -148,7 +147,7 @@ const suggestions = ref([
     image: '/images/ronaldo.png',
     posts: 3808,
     followers: '645M',
-    following: 589,
+    following: false,
     verified: true,
     recentPosts: ['/images/ronaldo1.png', '/images/ronaldo2.png', '/images/ronaldo3.png'],
   },
@@ -159,7 +158,7 @@ const suggestions = ref([
     image: '/images/kevinhart.png',
     posts: 9429,
     followers: '178M',
-    following: 1144,
+    following: false,
     verified: true,
     recentPosts: ['/images/kevin1.png', '/images/kevin2.png', '/images/kevin3.png'],
   },
@@ -170,24 +169,23 @@ const suggestions = ref([
     image: '/images/jane.png',
     posts: 20,
     followers: '78.8k',
-    following: 4112,
+    following: false,
     verified: false,
     recentPosts: ['/images/jane.png', '/images/sarah.png', '/images/emily.png'],
   },
   {
-    id: 3,
+    id: 4,
     username: 'daniel34',
     fullName: 'Daniel',
     image: '/images/mike.png',
     posts: 200,
     followers: '15.8k',
-    following: 400,
+    following: false,
     verified: false,
     recentPosts: ['/images/david.png', '/images/john_doe.png', '/images/mike.png'],
   },
 ]);
 
-// Toggle the follow/following state
 const toggleFollow = (user) => {
   user.following = !user.following;
 };
