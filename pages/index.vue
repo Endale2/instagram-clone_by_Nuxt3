@@ -14,7 +14,7 @@
 
         <!-- Posts Section -->
         <section class="mt-6 space-y-6">
-          <Post v-for="n in 5" :key="n" />
+          <Post  />
         </section>
       </div>
 

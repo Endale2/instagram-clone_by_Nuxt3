@@ -1,46 +1,97 @@
 <template>
   <div
-    v-for="(post, index) in posts"
+    v-for="(post, index) in uniquePosts"
     :key="index"
     class="bg-black text-white border border-gray-800 p-4 md:p-6 rounded-lg max-w-full mx-auto lg:max-w-[500px]"
   >
-    <!-- Header -->
-    <div class="flex items-center space-x-3 mb-3">
-      <img
-        :src="post.user.avatar"
-        alt="User Avatar"
-        class="h-10 w-10 rounded-full"
-      />
-      <div class="flex-1">
-        <div class="flex items-center space-x-1">
-          <span class="font-medium leading-tight">{{ post.user.username }}</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4 text-blue-500"
-            viewBox="0 0 20 20"
-            fill="currentColor"
+    <!-- Header with Hover Card -->
+    <div class="relative flex items-center justify-between mb-3 group">
+      <div class="flex items-center space-x-3">
+        <div class="relative">
+          <img
+            :src="post.user.avatar"
+            alt="User Avatar"
+            class="h-10 w-10 rounded-full cursor-pointer"
+          />
+          <div
+            class="absolute -left-8 top-12 w-80 bg-black text-white border border-gray-700 rounded-lg p-4 shadow-lg hidden group-hover:flex flex-col space-y-4 z-10"
           >
-            <path
-              fill-rule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414 0L9 11l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"
-              clip-rule="evenodd"
-            />
-          </svg>
+            <!-- Profile Info -->
+            <div class="flex items-center space-x-3">
+              <img
+                :src="post.user.avatar"
+                alt="User Profile"
+                class="h-14 w-14 rounded-full"
+              />
+              <div>
+                <div class="flex items-center space-x-1">
+                  <p class="font-semibold text-lg">{{ post.user.username }}</p>
+                  <CheckCircleIcon
+                    v-if="post.user.verified"
+                    class="h-5 w-5 text-blue-500"
+                  />
+                </div>
+                <p class="text-gray-400 text-sm">{{ post.user.fullName }}</p>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="flex justify-between text-sm text-gray-400">
+              <div class="flex flex-col items-center">
+                <p class="font-bold text-white">{{ post.user.posts }}</p>
+                <p>posts</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <p class="font-bold text-white">{{ post.user.followers }}</p>
+                <p>followers</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <p class="font-bold text-white">{{ post.user.following }}</p>
+                <p>following</p>
+              </div>
+            </div>
+
+            <!-- Recent Posts -->
+            <div class="mt-3">
+              <div class="flex space-x-2">
+                <img
+                  v-for="(recentPost, index) in post.user.recentPosts"
+                  :key="index"
+                  :src="recentPost"
+                  alt="Recent Post"
+                  class="h-20 w-20 object-cover rounded-md "
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        <span class="text-sm text-gray-500">{{ post.timeAgo }}</span>
+        <div>
+          <span class="font-medium leading-tight cursor-pointer">
+            {{ post.user.username }}
+          </span>
+          <CheckCircleIcon
+            v-if="post.user.verified"
+            class="h-5 w-5 text-blue-500 inline-block ml-1"
+          />
+        </div>
       </div>
+      <EllipsisHorizontalIcon class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white" />
     </div>
 
     <!-- Post Content -->
     <div class="relative">
-      <div v-if="post.type === 'image'" class="w-full">
-        <img :src="post.image" alt="Post" class="w-full rounded-lg" />
+      <div v-if="post.type === 'image'" class="w-full aspect-square">
+        <img
+          :src="post.image"
+          alt="Post"
+          class="w-full h-full object-cover rounded-lg"
+        />
       </div>
-      <div v-if="post.type === 'carousel'" class="relative">
+      <div v-if="post.type === 'carousel'" class="relative w-full aspect-square">
         <img
           :src="post.images[post.currentImageIndex]"
           alt="Carousel Image"
-          class="w-full rounded-lg"
+          class="w-full h-full object-cover rounded-lg"
         />
         <button
           class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black/60 text-white px-2 py-1 rounded-full"
@@ -54,6 +105,13 @@
         >
           &gt;
         </button>
+      </div>
+      <div v-if="post.type === 'video'" class="w-full aspect-square">
+        <video
+          :src="post.video"
+          controls
+          class="w-full h-full object-cover rounded-lg"
+        ></video>
       </div>
     </div>
 
@@ -82,6 +140,29 @@
       <span class="font-medium truncate">{{ post.user.username }}</span>
       {{ post.caption }}
     </p>
+
+    <!-- Top Comments -->
+    <div class="mt-4 space-y-2">
+      <div
+        v-for="(comment, index) in post.comments.slice(0, 2)"
+        :key="index"
+        class="text-sm"
+      >
+        <span class="font-medium">{{ comment.user }}</span>
+        <span>{{ comment.text }}</span>
+        <span v-if="comment.emoji" class="ml-2">{{ comment.emoji }}</span>
+      </div>
+    </div>
+
+    <!-- Comment Input -->
+    <div class="mt-4 flex items-center space-x-2">
+      <input
+        type="text"
+        placeholder="Add a comment..."
+        class="flex-grow bg-black text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none"
+      />
+      <BookmarkIcon class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white" />
+    </div>
   </div>
 </template>
 
@@ -90,31 +171,90 @@ import {
   HeartIcon,
   ChatBubbleLeftIcon,
   PaperAirplaneIcon,
+  EllipsisHorizontalIcon,
+  CheckCircleIcon,
+  BookmarkIcon,
 } from "@heroicons/vue/24/outline";
-import { reactive } from "vue";
 
-// Hardcoded post data
+import { reactive, computed } from "vue";
+
 const posts = reactive([
-  {
-    user: { username: "john_doe", avatar: "/images/john_doe.png" },
-    timeAgo: "2h",
-    type: "carousel",
-    images: ["/images/post-placeholder.png", "/images/post-placeholder1.png", "/images/post-placeholder2.png"],
-    currentImageIndex: 0,
-    likes: 120,
-    liked: false,
-    caption: "Exploring the mountains! 🏔️",
-  },
-  {
-    user: { username: "jane_smith", avatar: "/images/jane.png" },
-    timeAgo: "1d",
+ {
+    user: {
+      username: "john_doe",
+      avatar: "/images/john_doe.png",
+      fullName: "John Doe",
+      verified: true,
+      posts: 150,
+      followers: 3000,
+      following: 500,
+      recentPosts: ["/images/post-placeholder.png", "/images/post-placeholder1.png", "/images/post-placeholder2.png"],
+    },
     type: "image",
     image: "/images/post-placeholder1.png",
-    likes: 432,
+    likes: 120,
+    liked: true,
+    caption: "A beautiful sunset",
+    comments: [
+      { user: "emily", text: "Stunning view!", emoji: "😍" },
+      { user: "alex", text: "Where is this?", emoji: "📍" },
+    ],
+  },
+  {
+    user: {
+      username: "emily",
+      avatar: "/images/emily.png",
+      fullName: "Emily Jones",
+      verified: false,
+      posts: 90,
+      followers: 2000,
+      following: 300,
+      recentPosts: ["/images/emily.png", "/images/sarah.png"],
+    },
+    type: "video",
+    video: "/videos/sample-video.mp4",
+    likes: 85,
     liked: false,
-    caption: "City life never gets old 🌆",
+    caption: "A beautiful sunset by the lake 🌅",
+    comments: [
+      { user: "john_doe", text: "This looks amazing!", emoji: "🔥" },
+      { user: "alex", text: "Love it!", emoji: "❤️" },
+    ],
+  },
+  {
+    user: {
+      username: "alex",
+      avatar: "/images/alex.png",
+      fullName: "Mark Jones",
+      verified: true,
+      posts: 200,
+      followers: 5000,
+      following: 700,
+      recentPosts: ["/images/alex.png", "/images/italy.png", "images/paris.png"],
+    },
+    type: "carousel",
+    images: ["/images/paris.png", "/images/italy.png"],
+    currentImageIndex: 0,
+    likes: 190,
+    liked: false,
+    caption: "Traveling through Europe 🚆",
+    comments: [
+      { user: "emily", text: "So jealous!", emoji: "😍" },
+      { user: "john_doe", text: "What a trip!", emoji: "✈️" },
+    ],
   },
 ]);
+
+const uniquePosts = computed(() => {
+  const seenUsers = new Set();
+  return posts.filter((post) => {
+    if (seenUsers.has(post.user.username)) {
+      return false;
+    }
+    seenUsers.add(post.user.username);
+    return true;
+  });
+});
 
 const toggleLike = (post) => {
   post.liked = !post.liked;
