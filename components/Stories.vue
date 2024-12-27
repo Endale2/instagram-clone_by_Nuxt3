@@ -31,13 +31,7 @@
               class="h-16 w-16 rounded-full border border-black"
             />
           </div>
-          <!-- New Story Indicator -->
-          <span
-            v-if="story.isNew"
-            class="absolute bottom-0 right-0 bg-blue-500 rounded-full border border-black h-5 w-5 flex items-center justify-center text-white text-sm font-bold"
-          >
-            +
-          </span>
+         
         </div>
         <!-- Username -->
         <span class="text-xs text-gray-400 mt-2 truncate w-16 text-center">

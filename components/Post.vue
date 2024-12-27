@@ -63,6 +63,13 @@
                 />
               </div>
             </div>
+            <!-- Follow Button -->
+        <button
+          @click="toggleFollow(user)"
+          class="bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded hover:bg-blue-600"
+        >
+          + Follow
+        </button>
           </div>
         </div>
         <div>
@@ -127,6 +134,7 @@
         <PaperAirplaneIcon
           class="h-6 w-6 cursor-pointer hover:text-gray-400 transform rotate-45"
         />
+        <Icon icon="emojione:pushpin" class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white" />
       </div>
     </div>
 
@@ -159,9 +167,12 @@
       <input
         type="text"
         placeholder="Add a comment..."
-        class="flex-grow bg-black text-white border border-gray-700 rounded-lg px-4 py-2 focus:outline-none"
+        class="flex-grow bg-black text-white border-b border-gray-700 px-4 py-2 focus:outline-none"
       />
-      <BookmarkIcon class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white" />
+      <Icon
+        icon="emojione:pushpin"
+        class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white"
+      />
     </div>
   </div>
 </template>
@@ -173,9 +184,8 @@ import {
   PaperAirplaneIcon,
   EllipsisHorizontalIcon,
   CheckCircleIcon,
-  BookmarkIcon,
 } from "@heroicons/vue/24/outline";
-
+import { Icon } from "@iconify/vue";
 import { reactive, computed } from "vue";
 
 const posts = reactive([
