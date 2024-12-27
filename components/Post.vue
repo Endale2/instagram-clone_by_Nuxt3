@@ -124,19 +124,20 @@
 
     <!-- Post Actions -->
     <div class="flex justify-between items-center mt-4">
-      <div class="flex space-x-4">
-        <button @click="toggleLike(post)">
-          <HeartIcon
-            :class="['h-6 w-6 cursor-pointer', post.liked ? 'text-red-500' : 'hover:text-gray-400']"
-          />
-        </button>
-        <ChatBubbleLeftIcon class="h-6 w-6 cursor-pointer hover:text-gray-400" />
-        <PaperAirplaneIcon
-          class="h-6 w-6 cursor-pointer hover:text-gray-400 transform rotate-45"
-        />
-        <Icon icon="emojione:pushpin" class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white" />
-      </div>
-    </div>
+  <div class="flex space-x-4">
+    <button @click="toggleLike(post)">
+      <HeartIcon
+        :class="['h-6 w-6 cursor-pointer', post.liked ? 'text-red-500' : 'hover:text-gray-400']"
+      />
+    </button>
+    <ChatBubbleLeftIcon class="h-6 w-6 cursor-pointer hover:text-gray-400" />
+    <PaperAirplaneIcon
+      class="h-6 w-6 cursor-pointer hover:text-gray-400 transform rotate-45"
+    />
+  </div>
+  <BookmarkIcon class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white ml-auto" />
+</div>
+
 
     <!-- Likes -->
     <p class="mt-4 text-sm font-medium">
@@ -163,17 +164,15 @@
     </div>
 
     <!-- Comment Input -->
-    <div class="mt-4 flex items-center space-x-2">
-      <input
-        type="text"
-        placeholder="Add a comment..."
-        class="flex-grow bg-black text-white border-b border-gray-700 px-4 py-2 focus:outline-none"
-      />
-      <Icon
-        icon="emojione:pushpin"
-        class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white"
-      />
-    </div>
+<div class="mt-4 flex items-center space-x-2">
+  <input
+    type="text"
+    placeholder="Add a comment..."
+    class="flex-grow bg-black text-white border-b border-gray-700 px-4 py-2 focus:outline-none"
+  />
+  <FaceSmileIcon class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white" />
+</div>
+
   </div>
 </template>
 
@@ -184,6 +183,8 @@ import {
   PaperAirplaneIcon,
   EllipsisHorizontalIcon,
   CheckCircleIcon,
+  BookmarkIcon,
+  FaceSmileIcon
 } from "@heroicons/vue/24/outline";
 import { Icon } from "@iconify/vue";
 import { reactive, computed } from "vue";
