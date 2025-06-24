@@ -1,103 +1,74 @@
 <template>
-  <aside
-    class="bg-black text-gray-300 w-20 lg:w-64 h-screen fixed top-0 left-0 flex flex-col items-center lg:items-start p-4 space-y-8 z-20"
-  >
-    <div
-      class="text-white text-2xl font-bold mb-4 lg:block hidden mt-4 lg:mt-0"
-    >
-      Instagram Clone
+  <aside class="bg-black text-gray-300 w-18 sm:w-20 md:w-56 lg:w-60 h-screen fixed top-0 left-0 flex flex-col items-center lg:items-start p-2 sm:p-4 lg:p-6 space-y-4 border-r border-gray-800 z-20">
+    <div class="mb-6 mt-2 hidden lg:block">
+      <img src="/images/instagram-text.png" alt="Instagram" class="h-8 w-auto" />
     </div>
-
-    <nav class="flex flex-col space-y-6 w-full">
+    <div class="mb-6 mt-2 lg:hidden">
+      <img src="/images/instagram-icon.png" alt="Instagram" class="h-8 w-8" />
+    </div>
+    <nav class="flex flex-col space-y-2 w-full">
       <a
+        v-for="item in navItems"
+        :key="item.name"
         href="#"
-        class="flex items-center justify-center lg:justify-start space-x-4 text-white font-medium hover:text-gray-400 active-nav"
+        :class="[
+          'flex items-center rounded-lg py-2 px-3 group',
+          'justify-center lg:justify-start space-x-4',
+          'hover:bg-gray-800 transition-colors duration-200',
+          item.name === 'Home' ? 'text-white font-semibold' : 'text-gray-300',
+        ]"
       >
-        <Icon icon="mdi:home-outline" class="h-6 w-6" />
-        <span class="hidden lg:block">Home</span>
-      </a>
-      <a
-        href="#"
-        class="flex items-center justify-center lg:justify-start space-x-4 hover:text-gray-400"
-      >
-        <Icon icon="mdi:magnify" class="h-6 w-6" />
-        <span class="hidden lg:block">Search</span>
-      </a>
-      <a
-        href="#"
-        class="flex items-center justify-center lg:justify-start space-x-4 hover:text-gray-400"
-      >
-        <Icon icon="mdi:compass-outline" class="h-6 w-6" />
-        <span class="hidden lg:block">Explore</span>
-      </a>
-      <a
-        href="#"
-        class="flex items-center justify-center lg:justify-start space-x-4 hover:text-gray-400"
-      >
-        <Icon icon="mdi:play-box-outline" class="h-6 w-6" />
-        <span class="hidden lg:block">Reels</span>
-      </a>
-      <a
-        href="#"
-        class="flex items-center justify-center lg:justify-start space-x-4 hover:text-gray-400"
-      >
-        <Icon icon="mdi:message-outline" class="h-6 w-6" />
-        <span class="hidden lg:block">Messages</span>
-      </a>
-      <a
-        href="#"
-        class="flex items-center justify-center lg:justify-start space-x-4 hover:text-gray-400"
-      >
-        <Icon icon="mdi:bell-outline" class="h-6 w-6" />
-        <span class="hidden lg:block">Notifications</span>
-      </a>
-      <a
-        href="#"
-        class="flex items-center justify-center lg:justify-start space-x-4 hover:text-gray-400"
-      >
-        <Icon icon="mdi:plus-box-outline" class="h-6 w-6" />
-        <span class="hidden lg:block">Create</span>
-      </a>
-      <a
-        href="#"
-        class="flex items-center justify-center lg:justify-start space-x-4 hover:text-gray-400"
-      >
-        <Icon icon="mdi:account-outline" class="h-6 w-6" />
-        <span class="hidden lg:block">Profile</span>
-      </a>
-      <a
-        href="#"
-        class="flex items-center justify-center lg:justify-start space-x-4 hover:text-gray-400"
-      >
-        <Icon icon="mdi:dots-horizontal" class="h-6 w-6" />
-        <span class="hidden lg:block">More</span>
+        <component :is="item.name === 'Home' ? item.activeIcon : item.icon" class="h-6 w-6" />
+        <span :class="['hidden lg:block text-base', item.name === 'Home' ? 'font-bold' : 'font-medium']">
+          {{ item.name }}
+        </span>
       </a>
     </nav>
+    <div class="mt-auto w-full">
+      <a href="#" class="flex items-center justify-center lg:justify-start space-x-4 py-2 px-3 rounded-lg hover:bg-gray-800 transition-colors duration-200 text-gray-300">
+        <EllipsisHorizontalIcon class="h-6 w-6" />
+        <span class="hidden lg:block text-base font-medium">More</span>
+      </a>
+    </div>
   </aside>
 </template>
 
 <script setup>
-import { Icon } from "@iconify/vue";
+import { ref } from 'vue'
+import {
+  HomeIcon as HomeOutline,
+  MagnifyingGlassIcon as SearchOutline,
+  ChatBubbleOvalLeftEllipsisIcon as MessagesOutline,
+  HeartIcon as HeartOutline,
+  PlusIcon as PlusOutline,
+  UserCircleIcon as UserOutline,
+  Squares2X2Icon as ExploreOutline,
+  PlayCircleIcon as ReelsOutline,
+  EllipsisHorizontalIcon,
+} from '@heroicons/vue/24/outline'
+import {
+  HomeIcon as HomeSolid,
+  MagnifyingGlassIcon as SearchSolid,
+  ChatBubbleOvalLeftEllipsisIcon as MessagesSolid,
+  HeartIcon as HeartSolid,
+  PlusIcon as PlusSolid,
+  UserCircleIcon as UserSolid,
+  Squares2X2Icon as ExploreSolid,
+  PlayCircleIcon as ReelsSolid,
+} from '@heroicons/vue/24/solid'
+
+const navItems = ref([
+  { name: 'Home', icon: HomeOutline, activeIcon: HomeSolid },
+  { name: 'Search', icon: SearchOutline, activeIcon: SearchSolid },
+  { name: 'Explore', icon: ExploreOutline, activeIcon: ExploreSolid },
+  { name: 'Reels', icon: ReelsOutline, activeIcon: ReelsSolid },
+  { name: 'Messages', icon: MessagesOutline, activeIcon: MessagesSolid },
+  { name: 'Notifications', icon: HeartOutline, activeIcon: HeartSolid },
+  { name: 'Create', icon: PlusOutline, activeIcon: PlusSolid },
+  { name: 'Profile', icon: UserOutline, activeIcon: UserSolid },
+])
 </script>
 
 <style scoped>
-/* Sidebar Transition */
-aside {
-  transition: width 0.3s ease-in-out;
-}
-
-/* Label Transition */
-nav a .hidden {
-  transition: opacity 0.3s ease-in-out;
-}
-
-nav a:hover .hidden {
-  opacity: 0.8;
-}
-
-/* Active Navigation Styling */
-.active-nav {
-  color: white; /* Active blue color */
-  font-weight: bold;
-}
+/* Tailwind handles styling */
 </style>
