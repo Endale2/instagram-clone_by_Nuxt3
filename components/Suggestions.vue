@@ -1,34 +1,33 @@
 <template>
-  <div class="p-6 pl-8 w-80 bg-black text-white relative">
-    <!-- Profile Section -->
+  <div class="hidden md:block w-80 bg-black text-white pl-8 pr-6 py-6">
     <div class="flex items-center space-x-4 mb-8">
-      <img 
+      <img
         src="/images/profile.png"
         alt="User Profile"
-        class="h-14 w-14 rounded-full"
+        class="h-14 w-14 rounded-full border-2 border-transparent hover:border-gray-700 cursor-pointer"
       />
       <div class="flex-1">
-        <p class="font-semibold">cdjkr</p>
+        <p class="font-semibold text-sm">cdjkr</p>
         <p class="text-gray-500 text-sm">Endale</p>
       </div>
-      <button class="text-blue-400 font-medium text-sm">Switch</button>
+      <button class="text-blue-400 font-medium text-xs hover:text-blue-300">Switch</button>
     </div>
 
-    <!-- Suggestions Header -->
-    <h2 class="text-sm text-gray-400 font-medium mb-4">Suggestions for you</h2>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-sm text-gray-400 font-medium">Suggestions for you</h2>
+      <button class="text-xs text-white font-semibold hover:text-gray-400">See All</button>
+    </div>
 
-    <!-- Suggestions List -->
     <div
       v-for="(user, index) in suggestions"
       :key="user.id"
       class="flex justify-between items-center mb-4 relative group"
     >
-      <!-- User Info -->
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-3 cursor-pointer">
         <img
           :src="user.image"
-          alt="Suggested User"
-          class="h-10 w-10 rounded-full"
+          :alt="user.username"
+          class="h-9 w-9 rounded-full border border-gray-700 object-cover"
         />
         <div>
           <div class="flex items-center space-x-1">
@@ -36,7 +35,7 @@
             <svg
               v-if="user.verified"
               xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 text-blue-500"
+              class="h-3.5 w-3.5 text-blue-500 flex-shrink-0"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -47,27 +46,25 @@
               />
             </svg>
           </div>
-          <p class="text-gray-500 text-xs">Instagram recommended</p>
+          <p class="text-gray-500 text-xs truncate w-32">Instagram recommended</p>
         </div>
       </div>
-      <button 
+      <button
         @click="toggleFollow(user)"
         :class="user.following ? 'text-gray-400' : 'text-blue-400'"
-        class="font-medium text-sm"
+        class="font-medium text-xs hover:text-blue-300"
       >
         {{ user.following ? 'Following' : 'Follow' }}
       </button>
 
-      <!-- Hover Profile Card -->
       <div
-        class="absolute -left-8 top-12 w-100 bg-black text-white border border-gray-700 rounded-lg p-4 shadow-lg hidden group-hover:flex flex-col space-y-4 z-10"
+        class="absolute -left-10 top-1/2 -translate-y-1/2 w-[340px] bg-black text-white border border-gray-700 rounded-lg p-4 shadow-lg hidden group-hover:flex flex-col space-y-4 z-20"
       >
-        <!-- Profile Info -->
         <div class="flex items-center space-x-3">
           <img
             :src="user.image"
             alt="User Profile"
-            class="h-14 w-14 rounded-full"
+            class="h-16 w-16 rounded-full border-2 border-gray-700 object-cover"
           />
           <div>
             <div class="flex items-center space-x-1">
@@ -86,11 +83,10 @@
                 />
               </svg>
             </div>
-            <p class="text-gray-400 text-sm">{{ user.fullName }}</p>
+            <p class="text-gray-400 text-sm truncate">{{ user.fullName }}</p>
           </div>
         </div>
 
-        <!-- Stats -->
         <div class="flex justify-between text-sm text-gray-400">
           <div class="flex flex-col items-center">
             <p class="font-bold text-white">{{ user.posts }}</p>
@@ -106,31 +102,40 @@
           </div>
         </div>
 
-        <!-- Recent Posts -->
         <div class="grid grid-cols-3 gap-1">
           <img
-            v-for="(img, i) in user.recentPosts"
+            v-for="(img, i) in user.recentPosts.slice(0, 3)"
             :key="i"
             :src="img"
             alt="Recent Post"
-            class="h-16 w-full object-cover rounded"
+            class="h-20 w-full object-cover rounded"
           />
         </div>
 
-        <!-- Follow Button -->
         <button
           @click="toggleFollow(user)"
-          class="bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded hover:bg-blue-600"
+          :class="user.following ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'"
+          class="text-sm font-medium py-2 px-4 rounded"
         >
-          + Follow
+          {{ user.following ? 'Following' : 'Follow' }}
         </button>
       </div>
     </div>
 
-    <!-- Footer -->
-    <div class="mt-8 text-xs text-gray-500 space-y-1 leading-5">
-      <p>About • Help • Press • API • Jobs • Privacy • Terms • Locations</p>
-      <p>Language</p>
+    <div class="mt-8 text-xs text-gray-500 space-y-1 leading-4">
+      <p>
+        <a href="#" class="hover:underline">About</a> •
+        <a href="#" class="hover:underline">Help</a> •
+        <a href="#" class="hover:underline">Press</a> •
+        <a href="#" class="hover:underline">API</a> •
+        <a href="#" class="hover:underline">Jobs</a> •
+        <a href="#" class="hover:underline">Privacy</a> •
+        <a href="#" class="hover:underline">Terms</a> •
+        <a href="#" class="hover:underline">Locations</a>
+      </p>
+      <p class="mt-2">
+        <a href="#" class="hover:underline">Language</a>
+      </p>
       <p class="mt-2">© 2024 Instagram Clone By Endale</p>
     </div>
   </div>
@@ -196,9 +201,9 @@ const toggleFollow = (user) => {
 </script>
 
 <style scoped>
-@import 'tailwindcss/tailwind.css';
-
-.group:hover .group-hover\\:flex {
+/* No need for @import 'tailwindcss/tailwind.css'; if configured globally in nuxt.config.js */
+/* This specific rule is no longer needed with proper Tailwind setup as group-hover:flex handles it */
+/* .group:hover .group-hover\:flex {
   display: flex !important;
-}
+} */
 </style>

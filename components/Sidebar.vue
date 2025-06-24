@@ -1,13 +1,13 @@
 <template>
   <aside
-    class="bg-black text-gray-300 w-20 lg:w-64 h-screen fixed top-0 left-0 flex flex-col items-center lg:items-start p-4 space-y-8"
+    class="bg-black text-gray-300 w-20 lg:w-64 h-screen fixed top-0 left-0 flex flex-col items-center lg:items-start p-4 space-y-8 z-20"
   >
-    <!-- Instagram Logo -->
-    <div class="text-white text-2xl font-bold mb-4 lg:block hidden">
+    <div
+      class="text-white text-2xl font-bold mb-4 lg:block hidden mt-4 lg:mt-0"
+    >
       Instagram Clone
     </div>
 
-    <!-- Menu Items -->
     <nav class="flex flex-col space-y-6 w-full">
       <a
         href="#"
