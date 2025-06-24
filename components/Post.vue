@@ -1,13 +1,13 @@
 <template>
-  <div
-    v-for="post in uniquePosts"
-    :key="post.id"
-    class="w-full bg-black text-white border border-gray-800 rounded-lg
-           mb-4 sm:mb-6
-           px-0           
-           sm:max-w-[470px] sm:mx-auto 
-           md:px-4 lg:px-6 "      
-  >
+ <div
+  v-for="post in uniquePosts"
+  :key="post.id"
+  class="w-full bg-black text-white border border-gray-800 rounded-lg
+         mb-4 sm:mb-6
+         px-0
+         sm:max-w-[470px] sm:mx-auto
+         md:px-4 lg:px-6 "
+>
     <div class="relative flex items-center justify-between px-3 py-2 sm:px-4 sm:py-3">
     
       <div class="flex items-center space-x-3 group">
@@ -82,10 +82,10 @@
       <EllipsisHorizontalIcon class="h-6 w-6 text-gray-400 hover:text-white cursor-pointer" />
     </div>
 
-    <div class="relative w-full aspect-square border-t border-gray-800">
-      <template v-if="post.type==='image'">
-        <img :src="post.image" :alt="post.caption" class="w-full h-full object-cover" />
-      </template>
+<div class="relative w-full aspect-square border-t border-gray-800">
+  <template v-if="post.type==='image'">
+    <img :src="post.image" :alt="post.caption" class="w-full h-full object-cover" />
+  </template>
       <template v-else-if="post.type==='carousel'">
         <img
           :src="post.images[post.currentImageIndex]"
