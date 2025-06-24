@@ -4,12 +4,11 @@
     :key="post.id"
     class="w-full bg-black text-white border border-gray-800 rounded-lg
            mb-4 sm:mb-6
-           px-0          
+           px-0           
            sm:max-w-[470px] sm:mx-auto 
-           md:px-4 lg:px-6 "     
+           md:px-4 lg:px-6 "      
   >
-    <!-- header -->
-   <div class="relative flex items-center justify-between px-3 py-2 sm:px-4 sm:py-3">
+    <div class="relative flex items-center justify-between px-3 py-2 sm:px-4 sm:py-3">
     
       <div class="flex items-center space-x-3 group">
         <img
@@ -28,7 +27,6 @@
           <span class="text-gray-500 text-xs">• {{ post.timeAgo }}</span>
         </div>
 
-        <!-- hover card -->
         <div
           class="absolute left-0 top-10 w-[340px] bg-black text-white border border-gray-700
                  rounded-lg p-4 shadow-lg hidden group-hover:flex flex-col space-y-4 z-20"
@@ -73,8 +71,8 @@
           <button
             @click.stop="toggleUserFollow(post.user)"
             :class="isFollowingThisUser[post.user.username]
-                     ? 'bg-gray-700 hover:bg-gray-600'
-                     : 'bg-blue-500 hover:bg-blue-600'"
+                    ? 'bg-gray-700 hover:bg-gray-600'
+                    : 'bg-blue-500 hover:bg-blue-600'"
             class="w-full text-sm font-medium py-2 rounded text-white transition-colors"
           >
             {{ isFollowingThisUser[post.user.username] ? 'Following' : 'Follow' }}
@@ -84,8 +82,7 @@
       <EllipsisHorizontalIcon class="h-6 w-6 text-gray-400 hover:text-white cursor-pointer" />
     </div>
 
-    <!-- media -->
-<div class="relative w-full aspect-square border-t border-gray-800">
+    <div class="relative w-full aspect-square border-t border-gray-800">
       <template v-if="post.type==='image'">
         <img :src="post.image" :alt="post.caption" class="w-full h-full object-cover" />
       </template>
@@ -126,8 +123,7 @@
       </template>
     </div>
 
-    <!-- actions + caption + comments -->
-<div class="px-3 py-2 sm:px-4 sm:py-3">
+    <div class="px-3 py-2 sm:px-4 sm:py-3">
       <div class="flex justify-between items-center mb-3">
         <div class="flex space-x-4">
           <button @click="toggleLike(post)" class="focus:outline-none">
@@ -340,14 +336,3 @@ const addComment = postId => {
 <style scoped>
 /* No extra CSS—Tailwind handles it all */
 </style>
-
-
-
-
-
-
-
-
-
-
-
