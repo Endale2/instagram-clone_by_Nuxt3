@@ -13,8 +13,10 @@
         </section>
       </div>
 
-      <!-- Suggestions -->
-      <Suggestions />
+      <!-- Suggestions (Hidden on small screens) -->
+      <div class="hidden md:block w-[320px]">
+        <Suggestions />
+      </div>
     </div>
   </div>
 </template>
