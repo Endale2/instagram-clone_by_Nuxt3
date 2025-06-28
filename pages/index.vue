@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col w-full">
+  <div class="flex flex-col w-full max-w-[470px] mx-auto">
     <!-- Stories & Posts -->
     <div class="flex-grow flex flex-col w-full">
       <Stories />

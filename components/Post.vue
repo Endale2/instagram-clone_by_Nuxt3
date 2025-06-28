@@ -5,7 +5,6 @@
   class="w-full bg-black text-white border border-gray-800 rounded-lg
          mb-4 sm:mb-6
          px-0
-         max-w-[470px] mx-auto
          fade-in"
 >
     <div class="relative flex items-center justify-between px-3 py-2 sm:px-4 sm:py-3">
@@ -373,6 +372,7 @@ const posts = reactive([
 const localShowFullCaption = ref({})
 const localNewComment = ref({})
 const isFollowingThisUser = ref({})
+const videoRefs = ref({})
 const currentUser = { username: 'cdjkr', avatar: '/images/profile.png' }
 
 const uniquePosts = computed(() => {
@@ -415,14 +415,19 @@ const addComment = postId => {
 
 const toggleVideoPlay = (postId) => {
   const post = posts.find(p => p.id === postId)
-  const video = document.querySelector(`video[ref="video-${postId}"]`)
+  const video = videoRefs.value[postId]
   
   if (video) {
     if (post.isPlaying) {
       video.pause()
       post.isPlaying = false
     } else {
-      video.play()
+      video.play().catch(err => {
+        console.log('Video play failed:', err)
+        // Fallback: try to play without user interaction
+        video.muted = true
+        video.play()
+      })
       post.isPlaying = true
     }
   }
@@ -430,7 +435,7 @@ const toggleVideoPlay = (postId) => {
 
 const updateVideoProgress = (postId) => {
   const post = posts.find(p => p.id === postId)
-  const video = document.querySelector(`video[ref="video-${postId}"]`)
+  const video = videoRefs.value[postId]
   
   if (video && !video.paused) {
     post.videoProgress = (video.currentTime / video.duration) * 100
@@ -445,7 +450,7 @@ const onVideoEnd = (postId) => {
 
 const onVideoLoad = (postId) => {
   const post = posts.find(p => p.id === postId)
-  const video = document.querySelector(`video[ref="video-${postId}"]`)
+  const video = videoRefs.value[postId]
   if (video) {
     post.videoDuration = video.duration
   }

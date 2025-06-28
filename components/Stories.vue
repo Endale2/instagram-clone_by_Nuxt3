@@ -6,8 +6,6 @@
            px-0
            sm:px-4
            py-3
-           mx-auto
-           max-w-[470px]
            fade-in"
   >
    <button
@@ -28,20 +26,20 @@
 >
 
 
-      <div class="flex flex-col items-center min-w-[70px] sm:min-w-[80px] shrink-0 relative">
+      <div class="flex flex-col items-center min-w-[80px] sm:min-w-[90px] shrink-0 relative">
         <div class="relative">
           <img
             :src="stories[0].image"
             :alt="stories[0].username"
-            class="h-14 w-14 sm:h-16 sm:w-16 rounded-full border-2 border-gray-700 object-cover instagram-hover"
+            class="h-16 w-16 sm:h-20 sm:w-20 rounded-full border-2 border-gray-700 object-cover instagram-hover"
           />
           <div
-            class="absolute bottom-0 right-0 bg-blue-500 rounded-full h-5 w-5 flex items-center justify-center border-2 border-black"
+            class="absolute bottom-0 right-0 bg-blue-500 rounded-full h-6 w-6 flex items-center justify-center border-2 border-black"
           >
             <Plus class="w-3 h-3 text-white" />
           </div>
         </div>
-        <span class="text-xs text-white font-semibold mt-1 truncate w-14 sm:w-16 text-center">
+        <span class="text-xs text-white font-semibold mt-1 truncate w-16 sm:w-20 text-center">
           {{ stories[0].username }}
         </span>
       </div>
@@ -49,7 +47,7 @@
       <div
         v-for="story in stories.slice(1)"
         :key="story.id"
-        class="flex flex-col items-center min-w-[70px] sm:min-w-[80px] shrink-0"
+        class="flex flex-col items-center min-w-[80px] sm:min-w-[90px] shrink-0"
       >
         <div class="relative">
           <div
@@ -61,11 +59,11 @@
             <img
               :src="story.image"
               :alt="story.username"
-              class="h-14 w-14 sm:h-16 sm:w-16 rounded-full border-2 border-black object-cover instagram-hover"
+              class="h-16 w-16 sm:h-20 sm:w-20 rounded-full border-2 border-black object-cover instagram-hover"
             />
           </div>
         </div>
-        <span class="text-xs text-gray-400 mt-1 truncate w-14 sm:w-16 text-center">
+        <span class="text-xs text-gray-400 mt-1 truncate w-16 sm:w-20 text-center">
           {{ story.username }}
         </span>
       </div>
@@ -139,6 +137,16 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.stories-scrollbar {
+  -ms-overflow-style: none;       /* IE/Edge */
+  scrollbar-width: none;          /* Firefox */
+  -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
+}
+
+.stories-scrollbar::-webkit-scrollbar {
+  display: none;                  /* Chrome, Safari */
+}
+
 .hide-scrollbar {
   -ms-overflow-style: none;       /* IE/Edge */
   scrollbar-width: none;          /* Firefox */
@@ -148,5 +156,4 @@ onMounted(() => {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;                  /* Chrome, Safari */
 }
-
 </style>
