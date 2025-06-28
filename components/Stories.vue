@@ -3,30 +3,29 @@
     class="relative flex items-center
            border-b border-gray-800 bg-black
            w-full
-           px-0        <!-- mobile: no side padding -->
-           sm:px-4     <!-- sm+: 1rem side padding -->
-           md:px-6     <!-- md+: 1.5rem side padding -->
+           px-0
+           sm:px-4
            py-3
            mx-auto
-           sm:max-w-[580px]
-           lg:max-w-[650px]"
+           max-w-[470px]
+           fade-in"
   >
    <button
       v-show="!isAtStart"
       @click="scrollLeft"
-      class="absolute left-1 sm:left-2 md:left-4 z-10 h-8 w-8
+      class="absolute left-1 sm:left-2 z-10 h-8 w-8
              bg-white rounded-full flex items-center justify-center
              text-black hover:bg-gray-200 focus:outline-none shadow-md
-             transition-all duration-200"
+             transition-all duration-200 instagram-hover"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
       </svg>
     </button>
 
  <div
   ref="scrollContainer"
-  class="flex w-full space-x-3 sm:space-x-4 overflow-x-auto hide-scrollbar touch-auto snap-x snap-mandatory"
+  class="flex w-full space-x-3 sm:space-x-4 overflow-x-auto stories-scrollbar touch-auto snap-x snap-mandatory"
   @scroll="checkScrollPosition"
 >
 
@@ -36,12 +35,14 @@
           <img
             :src="stories[0].image"
             :alt="stories[0].username"
-            class="h-14 w-14 sm:h-16 sm:w-16 rounded-full border-2 border-gray-700 object-cover"
+            class="h-14 w-14 sm:h-16 sm:w-16 rounded-full border-2 border-gray-700 object-cover instagram-hover"
           />
           <div
             class="absolute bottom-0 right-0 bg-blue-500 rounded-full h-5 w-5 flex items-center justify-center border-2 border-black"
           >
-            <PlusIcon class="w-3 h-3 text-white" />
+            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
           </div>
         </div>
         <span class="text-xs text-white font-semibold mt-1 truncate w-14 sm:w-16 text-center">
@@ -64,7 +65,7 @@
             <img
               :src="story.image"
               :alt="story.username"
-              class="h-14 w-14 sm:h-16 sm:w-16 rounded-full border-2 border-black object-cover"
+              class="h-14 w-14 sm:h-16 sm:w-16 rounded-full border-2 border-black object-cover instagram-hover"
             />
           </div>
         </div>
@@ -77,12 +78,12 @@
     <button
       v-show="!isAtEnd"
       @click="scrollRight"
-      class="absolute right-1 sm:right-2 md:right-4 z-10 h-8 w-8
+      class="absolute right-1 sm:right-2 z-10 h-8 w-8
              bg-white rounded-full flex items-center justify-center
              text-black hover:bg-gray-200 focus:outline-none shadow-md
-             transition-all duration-200"
+             transition-all duration-200 instagram-hover"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
       </svg>
     </button>
@@ -91,7 +92,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { PlusIcon } from '@heroicons/vue/24/outline'
 
 const stories = ref([
   { id: 1, username: 'you', image: '/images/profile.png', isNew: true },

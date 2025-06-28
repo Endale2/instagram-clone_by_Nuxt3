@@ -12,10 +12,14 @@
              pt-[3.5rem] pb-[3.5rem] sm:pt-[4rem] sm:pb-[4rem]
              md:pt-0 md:pb-0
              md:ml-20 lg:ml-64
-             overflow-x-hidden"
+             overflow-x-hidden
+             flex justify-center
+             lg:mr-[320px]"
     >
-      <!-- **Replace** the `container` wrapper with direct slot -->
-      <NuxtPage />
+      <!-- Content wrapper with max width like Instagram -->
+      <div class="w-full max-w-[630px]">
+        <NuxtPage />
+      </div>
     </div>
 
     <!-- Mobile Footer -->

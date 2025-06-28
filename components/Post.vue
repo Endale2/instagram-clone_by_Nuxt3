@@ -5,8 +5,8 @@
   class="w-full bg-black text-white border border-gray-800 rounded-lg
          mb-4 sm:mb-6
          px-0
-         sm:max-w-[470px] sm:mx-auto
-         md:px-4 lg:px-6 "
+         max-w-[470px] mx-auto
+         fade-in"
 >
     <div class="relative flex items-center justify-between px-3 py-2 sm:px-4 sm:py-3">
     
@@ -14,22 +14,27 @@
         <img
           :src="post.user.avatar"
           :alt="post.user.username"
-          class="h-9 w-9 rounded-full border border-gray-700 cursor-pointer object-cover"
+          class="h-8 w-8 sm:h-9 sm:w-9 rounded-full border border-gray-700 cursor-pointer object-cover instagram-hover"
         />
         <div class="flex items-center space-x-1">
-          <a href="#" class="font-semibold text-sm hover:underline">
+          <a href="#" class="font-semibold text-sm hover:underline instagram-hover">
             {{ post.user.username }}
           </a>
-          <CheckCircleIcon
+          <svg
             v-if="post.user.verified"
             class="h-3.5 w-3.5 text-blue-500 flex-shrink-0"
-          />
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
           <span class="text-gray-500 text-xs">• {{ post.timeAgo }}</span>
         </div>
 
         <div
           class="absolute left-0 top-10 w-[340px] bg-black text-white border border-gray-700
-                 rounded-lg p-4 shadow-lg hidden group-hover:flex flex-col space-y-4 z-20"
+                 rounded-lg p-4 shadow-lg hidden group-hover:flex flex-col space-y-4 z-20
+                 instagram-shadow-lg"
         >
           <div class="flex items-center space-x-3">
             <img
@@ -40,10 +45,14 @@
             <div>
               <div class="flex items-center space-x-1">
                 <p class="font-semibold text-lg">{{ post.user.username }}</p>
-                <CheckCircleIcon
+                <svg
                   v-if="post.user.verified"
                   class="h-5 w-5 text-blue-500"
-                />
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
               </div>
               <p class="text-gray-400 text-sm truncate">{{ post.user.fullName }}</p>
             </div>
@@ -73,13 +82,15 @@
             :class="isFollowingThisUser[post.user.username]
                     ? 'bg-gray-700 hover:bg-gray-600'
                     : 'bg-blue-500 hover:bg-blue-600'"
-            class="w-full text-sm font-medium py-2 rounded text-white transition-colors"
+            class="w-full text-sm font-medium py-2 rounded text-white transition-colors instagram-hover"
           >
             {{ isFollowingThisUser[post.user.username] ? 'Following' : 'Follow' }}
           </button>
         </div>
       </div>
-      <EllipsisHorizontalIcon class="h-6 w-6 text-gray-400 hover:text-white cursor-pointer" />
+      <svg class="h-6 w-6 text-gray-400 hover:text-white cursor-pointer instagram-hover" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+      </svg>
     </div>
 
 <div class="relative w-full aspect-square border-t border-gray-800">
@@ -106,14 +117,14 @@
         <button
           v-if="post.currentImageIndex>0"
           @click="prevImage(post)"
-          class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 p-1 rounded-full opacity-80 hover:opacity-100"
+          class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 p-1 rounded-full opacity-80 hover:opacity-100 instagram-hover"
         >
           ‹
         </button>
         <button
           v-if="post.currentImageIndex<post.images.length-1"
           @click="nextImage(post)"
-          class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 p-1 rounded-full opacity-80 hover:opacity-100"
+          class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 p-1 rounded-full opacity-80 hover:opacity-100 instagram-hover"
         >
           ›
         </button>
@@ -126,40 +137,57 @@
     <div class="px-3 py-2 sm:px-4 sm:py-3">
       <div class="flex justify-between items-center mb-3">
         <div class="flex space-x-4">
-          <button @click="toggleLike(post)" class="focus:outline-none">
-            <component
-              :is="post.liked ? HeartSolid : HeartOutline"
-              :class="[
-                'h-6 w-6 cursor-pointer transition-colors',
-                post.liked ? 'text-red-500' : 'text-white hover:text-gray-400'
-              ]"
-            />
+          <button @click="toggleLike(post)" class="focus:outline-none instagram-hover">
+            <svg
+              v-if="post.liked"
+              class="h-6 w-6 text-red-500 cursor-pointer transition-colors heart-animation"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <svg
+              v-else
+              class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+            >
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
           </button>
-          <ChatBubbleLeftIcon class="h-6 w-6 hover:text-gray-400 cursor-pointer" />
-          <PaperAirplaneIcon class="h-6 w-6 transform -rotate-45 hover:text-gray-400 cursor-pointer" />
+          <svg class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+          </svg>
+          <svg class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover transform -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+          </svg>
         </div>
-        <BookmarkIcon class="h-6 w-6 hover:text-gray-400 cursor-pointer" />
+        <svg class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+        </svg>
       </div>
 
       <p class="text-sm font-semibold mb-2">{{ post.likes.toLocaleString() }} likes</p>
 
       <p class="text-sm leading-tight mb-2">
-        <span class="font-semibold hover:underline cursor-pointer">{{ post.user.username }}</span>
+        <span class="font-semibold hover:underline cursor-pointer instagram-hover">{{ post.user.username }}</span>
         <span v-if="!localShowFullCaption[post.id]">
           {{ post.caption.slice(0,100) }}
           <span
             v-if="post.caption.length>100"
-            class="text-gray-500 cursor-pointer"
+            class="text-gray-500 cursor-pointer instagram-hover"
             @click="localShowFullCaption[post.id]=true"
           >... more</span>
         </span>
         <span v-else>{{ post.caption }}</span>
-        <a href="#" class="text-gray-500 text-xs ml-2 hover:underline">See translation</a>
+        <a href="#" class="text-gray-500 text-xs ml-2 hover:underline instagram-hover">See translation</a>
       </p>
 
       <button
         v-if="post.comments.length>2"
-        class="text-gray-500 text-sm mb-2 hover:underline"
+        class="text-gray-500 text-sm mb-2 hover:underline instagram-hover"
       >View all {{ post.comments.length }} comments</button>
 
       <div class="space-y-1 mb-2">
@@ -168,7 +196,7 @@
           :key="i"
           class="text-sm"
         >
-          <span class="font-semibold hover:underline cursor-pointer">{{ c.user }}</span>
+          <span class="font-semibold hover:underline cursor-pointer instagram-hover">{{ c.user }}</span>
           <span class="ml-1">{{ c.text }}</span>
           <span v-if="c.emoji" class="ml-1">{{ c.emoji }}</span>
         </div>
@@ -177,7 +205,9 @@
       <p class="text-gray-500 text-xs uppercase mb-4">{{ post.timeAgo }}</p>
 
       <div class="flex items-center border-t border-gray-800 pt-3 space-x-2">
-        <FaceSmileIcon class="h-6 w-6 hover:text-white cursor-pointer" />
+        <svg class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
         <input
           type="text"
           v-model="localNewComment[post.id]"
@@ -190,7 +220,7 @@
             'text-blue-400': localNewComment[post.id]?.trim(),
             'opacity-50 cursor-not-allowed': !localNewComment[post.id]?.trim()
           }"
-          class="font-semibold text-sm ml-2 transition-opacity"
+          class="font-semibold text-sm ml-2 transition-opacity instagram-hover"
           @click="addComment(post.id)"
         >Post</button>
       </div>
@@ -200,16 +230,6 @@
 
 <script setup>
 import { reactive, computed, ref } from 'vue'
-import {
-  HeartIcon as HeartOutline,
-  ChatBubbleLeftIcon,
-  PaperAirplaneIcon,
-  EllipsisHorizontalIcon,
-  CheckCircleIcon,
-  BookmarkIcon,
-  FaceSmileIcon
-} from '@heroicons/vue/24/outline'
-import { HeartIcon as HeartSolid } from '@heroicons/vue/24/solid'
 
 const posts = reactive([
   {

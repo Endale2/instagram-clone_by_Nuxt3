@@ -1,3 +1,230 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Instagram-specific styles */
+@layer base {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #000000;
+  }
+}
+
+@layer components {
+  /* Instagram-like button styles */
+  .instagram-button {
+    @apply bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-200;
+  }
+  
+  .instagram-button-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-black font-semibold py-2 px-4 rounded transition-colors duration-200;
+  }
+  
+  /* Instagram-like input styles */
+  .instagram-input {
+    @apply bg-gray-50 border border-gray-300 rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-gray-400;
+  }
+  
+  /* Instagram-like card styles */
+  .instagram-card {
+    @apply bg-white border border-gray-300 rounded-sm;
+  }
+  
+  /* Custom scrollbar for stories */
+  .stories-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .stories-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Instagram-like hover effects */
+  .instagram-hover {
+    @apply transition-all duration-200 ease-in-out;
+  }
+  
+  /* Instagram-like text styles */
+  .instagram-text-primary {
+    @apply text-black font-semibold;
+  }
+  
+  .instagram-text-secondary {
+    @apply text-gray-600 text-sm;
+  }
+  
+  .instagram-text-muted {
+    @apply text-gray-400 text-xs;
+  }
+
+  /* Instagram-like heart animation */
+  .heart-animation {
+    animation: heartBeat 0.3s ease-in-out;
+  }
+
+  @keyframes heartBeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  /* Instagram-like gradient borders for stories */
+  .story-gradient {
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  }
+
+  /* Instagram-like focus styles */
+  .instagram-focus:focus {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-black;
+  }
+
+  /* Instagram-like loading skeleton */
+  .instagram-skeleton {
+    @apply animate-pulse bg-gray-800 rounded;
+  }
+
+  /* Instagram-like verified badge */
+  .verified-badge {
+    @apply text-blue-500;
+    filter: drop-shadow(0 0 2px rgba(59, 130, 246, 0.5));
+  }
+}
+
+/* Responsive improvements */
+@media (max-width: 640px) {
+  .mobile-optimized {
+    @apply px-0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-optimized {
+    @apply px-4;
+  }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1024px) {
+  .desktop-optimized {
+    @apply max-w-[470px] mx-auto;
+  }
+}
+
+/* Instagram-like animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Custom focus styles for better accessibility */
+.focus-visible:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+/* Instagram-like loading states */
+.loading-skeleton {
+  @apply animate-pulse bg-gray-200 rounded;
+}
+
+/* Instagram-like shadows */
+.instagram-shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.instagram-shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure proper layout on all screen sizes */
+@media (max-width: 1023px) {
+  .lg\:mr-\[320px\] {
+    margin-right: 0;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+}
+
+/* Instagram-like typography */
+.instagram-font {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Instagram-like spacing */
+.instagram-spacing {
+  @apply space-y-4;
+}
+
+/* Instagram-like borders */
+.instagram-border {
+  @apply border border-gray-800;
+}
+
+/* Instagram-like rounded corners */
+.instagram-rounded {
+  @apply rounded-lg;
+}
+
+/* Instagram-like transitions */
+.instagram-transition {
+  @apply transition-all duration-200 ease-in-out;
+}
+
+/* Instagram-like hover states */
+.instagram-hover-state:hover {
+  @apply opacity-80;
+}
+
+/* Instagram-like active states */
+.instagram-active:active {
+  @apply transform scale-95;
+}
+
+/* Instagram-like disabled states */
+.instagram-disabled:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Instagram-like focus states */
+.instagram-focus-state:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-black;
+}
+
+/* Instagram-like selection */
+.instagram-selection::selection {
+  @apply bg-blue-500 text-white;
+}
+
+/* Instagram-like scrollbar */
+.instagram-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.instagram-scrollbar::-webkit-scrollbar-track {
+  @apply bg-gray-900;
+}
+
+.instagram-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gray-700 rounded-full;
+}
+
+.instagram-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-600;
+}
