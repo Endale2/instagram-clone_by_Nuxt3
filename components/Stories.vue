@@ -18,9 +18,7 @@
              text-black hover:bg-gray-200 focus:outline-none shadow-md
              transition-all duration-200 instagram-hover"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-      </svg>
+      <ChevronLeft class="w-5 h-5" />
     </button>
 
  <div
@@ -40,9 +38,7 @@
           <div
             class="absolute bottom-0 right-0 bg-blue-500 rounded-full h-5 w-5 flex items-center justify-center border-2 border-black"
           >
-            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-            </svg>
+            <Plus class="w-3 h-3 text-white" />
           </div>
         </div>
         <span class="text-xs text-white font-semibold mt-1 truncate w-14 sm:w-16 text-center">
@@ -83,15 +79,14 @@
              text-black hover:bg-gray-200 focus:outline-none shadow-md
              transition-all duration-200 instagram-hover"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-      </svg>
+      <ChevronRight class="w-5 h-5" />
     </button>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { ChevronLeft, ChevronRight, Plus } from 'lucide-vue-next'
 
 const stories = ref([
   { id: 1, username: 'you', image: '/images/profile.png', isNew: true },

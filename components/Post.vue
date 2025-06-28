@@ -88,49 +88,106 @@
           </button>
         </div>
       </div>
-      <svg class="h-6 w-6 text-gray-400 hover:text-white cursor-pointer instagram-hover" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-      </svg>
+      <MoreHorizontal class="h-6 w-6 text-gray-400 hover:text-white cursor-pointer instagram-hover" />
     </div>
 
 <div class="relative w-full aspect-square border-t border-gray-800">
   <template v-if="post.type==='image'">
-    <img :src="post.image" :alt="post.caption" class="w-full h-full object-cover" />
+    <div 
+      class="relative w-full h-full"
+      @dblclick="handleDoubleClick(post)"
+    >
+      <img :src="post.image" :alt="post.caption" class="w-full h-full object-cover" />
+      <!-- Double tap heart animation -->
+      <div 
+        v-if="post.showDoubleTapHeart"
+        class="absolute inset-0 flex items-center justify-center pointer-events-none"
+      >
+        <Heart class="h-24 w-24 text-red-500 animate-ping" fill="currentColor" />
+      </div>
+    </div>
   </template>
       <template v-else-if="post.type==='carousel'">
-        <img
-          :src="post.images[post.currentImageIndex]"
-          class="w-full h-full object-cover"
-        />
-        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1">
-          <span
-            v-for="(_, idx) in post.images"
-            :key="idx"
-            :class="[
-              'h-1.5 w-1.5 rounded-full transition-colors',
-              post.currentImageIndex===idx
-                ? 'bg-blue-500'
-                : 'bg-gray-400 opacity-50'
-            ]"
-          />
+        <div class="relative w-full h-full">
+          <div 
+            @dblclick="handleDoubleClick(post)"
+            class="relative w-full h-full"
+          >
+            <img
+              :src="post.images[post.currentImageIndex]"
+              class="w-full h-full object-cover"
+            />
+            <!-- Double tap heart animation -->
+            <div 
+              v-if="post.showDoubleTapHeart"
+              class="absolute inset-0 flex items-center justify-center pointer-events-none"
+            >
+              <Heart class="h-24 w-24 text-red-500 animate-ping" fill="currentColor" />
+            </div>
+          </div>
+          <!-- Carousel Dots -->
+          <div class="absolute top-3 left-1/2 -translate-x-1/2 flex space-x-1">
+            <span
+              v-for="(_, idx) in post.images"
+              :key="idx"
+              :class="[
+                'h-1.5 w-1.5 rounded-full transition-colors',
+                post.currentImageIndex===idx
+                  ? 'bg-white'
+                  : 'bg-white/50'
+              ]"
+            />
+          </div>
+          <!-- Navigation Buttons -->
+          <button
+            v-if="post.currentImageIndex>0"
+            @click="prevImage(post)"
+            class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 p-2 rounded-full opacity-80 hover:opacity-100 instagram-hover"
+          >
+            <ChevronLeft class="h-5 w-5 text-white" />
+          </button>
+          <button
+            v-if="post.currentImageIndex<post.images.length-1"
+            @click="nextImage(post)"
+            class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 p-2 rounded-full opacity-80 hover:opacity-100 instagram-hover"
+          >
+            <ChevronRight class="h-5 w-5 text-white" />
+          </button>
         </div>
-        <button
-          v-if="post.currentImageIndex>0"
-          @click="prevImage(post)"
-          class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 p-1 rounded-full opacity-80 hover:opacity-100 instagram-hover"
-        >
-          ‹
-        </button>
-        <button
-          v-if="post.currentImageIndex<post.images.length-1"
-          @click="nextImage(post)"
-          class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 p-1 rounded-full opacity-80 hover:opacity-100 instagram-hover"
-        >
-          ›
-        </button>
       </template>
       <template v-else-if="post.type==='video'">
-        <video :src="post.video" controls class="w-full h-full object-cover" />
+        <div class="relative w-full h-full">
+          <video 
+            :src="post.video" 
+            :ref="el => { if (el) videoRefs[post.id] = el }"
+            class="w-full h-full object-cover"
+            @click="toggleVideoPlay(post.id)"
+            @timeupdate="updateVideoProgress(post.id)"
+            @ended="onVideoEnd(post.id)"
+            @loadedmetadata="onVideoLoad(post.id)"
+            preload="metadata"
+            muted
+          />
+          <!-- Video Play Button Overlay -->
+          <div 
+            v-if="!post.isPlaying" 
+            @click="toggleVideoPlay(post.id)"
+            class="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer"
+          >
+            <Play class="h-16 w-16 text-white opacity-80" />
+          </div>
+          <!-- Video Progress Bar -->
+          <div class="absolute bottom-0 left-0 right-0 h-1 bg-black/50">
+            <div 
+              class="h-full bg-white transition-all duration-100"
+              :style="{ width: post.videoProgress + '%' }"
+            ></div>
+          </div>
+          <!-- Video Duration -->
+          <div class="absolute top-3 right-3 bg-black/60 px-2 py-1 rounded text-white text-xs">
+            {{ formatTime(post.videoDuration) }}
+          </div>
+        </div>
       </template>
     </div>
 
@@ -138,35 +195,20 @@
       <div class="flex justify-between items-center mb-3">
         <div class="flex space-x-4">
           <button @click="toggleLike(post)" class="focus:outline-none instagram-hover">
-            <svg
+            <Heart
               v-if="post.liked"
               class="h-6 w-6 text-red-500 cursor-pointer transition-colors heart-animation"
               fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
-            <svg
+            />
+            <Heart
               v-else
               class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer transition-colors"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-            >
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
+            />
           </button>
-          <svg class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-            <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-          </svg>
-          <svg class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover transform -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-            <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-          </svg>
+          <MessageCircle class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover" />
+          <Send class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover transform -rotate-45" />
         </div>
-        <svg class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-          <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-        </svg>
+        <Bookmark class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover" />
       </div>
 
       <p class="text-sm font-semibold mb-2">{{ post.likes.toLocaleString() }} likes</p>
@@ -205,9 +247,7 @@
       <p class="text-gray-500 text-xs uppercase mb-4">{{ post.timeAgo }}</p>
 
       <div class="flex items-center border-t border-gray-800 pt-3 space-x-2">
-        <svg class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-          <path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
+        <Smile class="h-6 w-6 text-white hover:text-gray-400 cursor-pointer instagram-hover" />
         <input
           type="text"
           v-model="localNewComment[post.id]"
@@ -229,11 +269,22 @@
 </template>
 
 <script setup>
-import { reactive, computed, ref } from 'vue'
+import { reactive, computed, ref, onMounted } from 'vue'
+import { 
+  Heart, 
+  MessageCircle, 
+  Send, 
+  Bookmark, 
+  Smile, 
+  MoreHorizontal,
+  ChevronLeft,
+  ChevronRight,
+  Play
+} from 'lucide-vue-next'
 
 const posts = reactive([
   {
-    id: 1, // Added ID for easier local state management
+    id: 1,
     user: {
       username: "john_doe",
       avatar: "/images/john_doe.png",
@@ -241,13 +292,14 @@ const posts = reactive([
       verified: true,
       posts: 150,
       followers: "3K",
-      following: 500, // Original 'following' property
+      following: 500,
       recentPosts: ["/images/post-placeholder.png", "/images/post-placeholder1.png", "/images/post-placeholder2.png"],
     },
     type: "image",
     image: "/images/post-placeholder1.png",
-    likes: 120, // Original numeric likes
+    likes: 120,
     liked: false,
+    showDoubleTapHeart: false,
     caption: "A beautiful sunset over the mountains. Nature's masterpiece! #sunset #nature #mountains. This is a very long caption to demonstrate the 'more' functionality, as it often appears on Instagram posts. It needs to be long enough to be truncated. Keep going, this is just to fill space.",
     comments: [
       { user: "emily", text: "Stunning view!", emoji: "😍" },
@@ -257,12 +309,12 @@ const posts = reactive([
       { user: "olivia", text: "Must visit!", emoji: "🤩" },
     ],
     timeAgo: "2hr",
-    currentImageIndex: 0, // for carousel type only
+    currentImageIndex: 0,
   },
   {
     id: 2,
     user: {
-      username: "emily_travels", // Adjusted username to avoid conflict with `emily` from suggestions
+      username: "emily_travels",
       avatar: "/images/emily.png",
       fullName: "Emily Jones",
       verified: false,
@@ -275,6 +327,10 @@ const posts = reactive([
     video: "/videos/sample-video.mp4",
     likes: 85,
     liked: false,
+    isPlaying: false,
+    videoProgress: 0,
+    videoDuration: 0,
+    showDoubleTapHeart: false,
     caption: "A beautiful sunset by the lake 🌅. So calming and serene. #lake #sunset #video",
     comments: [
       { user: "john_doe", text: "This looks amazing!", emoji: "🔥" },
@@ -288,20 +344,21 @@ const posts = reactive([
   {
     id: 3,
     user: {
-      username: "alex_captures", // Adjusted username
+      username: "alex_captures",
       avatar: "/images/alex.png",
       fullName: "Mark Jones",
       verified: true,
       posts: 200,
       followers: "5K",
       following: 700,
-      recentPosts: ["/images/paris.png", "/images/italy.png", "/images/post-placeholder.png"], // Corrected image paths
+      recentPosts: ["/images/paris.png", "/images/italy.png", "/images/post-placeholder.png"],
     },
     type: "carousel",
     images: ["/images/paris.png", "/images/italy.png", "/images/post-placeholder.png"],
     currentImageIndex: 0,
     likes: 190,
     liked: false,
+    showDoubleTapHeart: false,
     caption: "Traveling through Europe 🚆. Such incredible architecture and history! #travel #europe #paris #italy #adventure #wanderlust. Another fairly long caption to showcase the 'more' functionality on a carousel post. Europe is full of wonders!",
     comments: [
       { user: "emily_travels", text: "So jealous!", emoji: "😍" },
@@ -331,18 +388,22 @@ const toggleLike = post => {
   post.liked = !post.liked
   post.likes += post.liked ? 1 : -1
 }
+
 const nextImage = post => {
   post.currentImageIndex = (post.currentImageIndex + 1) % post.images.length
 }
+
 const prevImage = post => {
   post.currentImageIndex = (post.currentImageIndex - 1 + post.images.length) % post.images.length
 }
+
 const toggleUserFollow = user => {
   if (typeof isFollowingThisUser.value[user.username] === 'undefined') {
     isFollowingThisUser.value[user.username] = false
   }
   isFollowingThisUser.value[user.username] = !isFollowingThisUser.value[user.username]
 }
+
 const addComment = postId => {
   const post = posts.find(p => p.id === postId)
   const txt = localNewComment.value[postId]?.trim()
@@ -351,6 +412,74 @@ const addComment = postId => {
     localNewComment.value[postId] = ''
   }
 }
+
+const toggleVideoPlay = (postId) => {
+  const post = posts.find(p => p.id === postId)
+  const video = document.querySelector(`video[ref="video-${postId}"]`)
+  
+  if (video) {
+    if (post.isPlaying) {
+      video.pause()
+      post.isPlaying = false
+    } else {
+      video.play()
+      post.isPlaying = true
+    }
+  }
+}
+
+const updateVideoProgress = (postId) => {
+  const post = posts.find(p => p.id === postId)
+  const video = document.querySelector(`video[ref="video-${postId}"]`)
+  
+  if (video && !video.paused) {
+    post.videoProgress = (video.currentTime / video.duration) * 100
+  }
+}
+
+const onVideoEnd = (postId) => {
+  const post = posts.find(p => p.id === postId)
+  post.isPlaying = false
+  post.videoProgress = 0
+}
+
+const onVideoLoad = (postId) => {
+  const post = posts.find(p => p.id === postId)
+  const video = document.querySelector(`video[ref="video-${postId}"]`)
+  if (video) {
+    post.videoDuration = video.duration
+  }
+}
+
+const handleDoubleClick = (post) => {
+  if (!post.liked) {
+    post.liked = true
+    post.likes += 1
+  }
+  post.showDoubleTapHeart = true
+  setTimeout(() => {
+    post.showDoubleTapHeart = false
+  }, 1000)
+}
+
+const formatTime = (seconds) => {
+  if (!seconds) return '0:00'
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs.toString().padStart(2, '0')}`
+}
+
+onMounted(() => {
+  // Initialize video progress for all video posts
+  posts.forEach(post => {
+    if (post.type === 'video') {
+      post.videoProgress = 0
+      post.isPlaying = false
+      post.videoDuration = 0
+    }
+    post.showDoubleTapHeart = false
+  })
+})
 </script>
 
 <style scoped>
